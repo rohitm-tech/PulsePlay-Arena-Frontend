@@ -27,7 +27,7 @@ export default function RegisterPage() {
       const data = await registerRequest({ name, email, password, favoriteTeam: team });
       dispatch(setCredentials(data));
       toast.success('Account ready');
-      router.push('/matches');
+      router.push('/arena');
     } catch {
       toast.error('Could not register');
     } finally {

@@ -26,7 +26,7 @@ export default function LoginPage() {
       const data = await loginRequest({ email, password });
       dispatch(setCredentials(data));
       toast.success('Welcome back');
-      router.push('/matches');
+      router.push('/arena');
     } catch {
       toast.error('Invalid credentials');
     } finally {

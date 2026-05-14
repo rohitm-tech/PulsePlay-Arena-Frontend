@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { RefreshCw, Search } from 'lucide-react';
+import Link from 'next/link';
+import { CalendarClock, Inbox, Layers, RefreshCw, Search, type LucideIcon } from 'lucide-react';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { Button } from '@/components/ui/button';
 import api from '@/lib/api';
@@ -18,6 +19,7 @@ import {
   type LiveMatchesGroupMode,
   type MatchTimeBucket,
 } from '@/lib/liveMatchesUi';
+import { cn } from '@/lib/utils';
 
 type LiveMatchesResponse = { data: MatchSummary[]; updatedAt?: string | null };
 
@@ -41,6 +43,43 @@ const TIME_FILTER_OPTIONS: { value: MatchTimeBucket; label: string }[] = [
   { value: 'current', label: 'Current' },
   { value: 'upcoming', label: 'Upcoming' },
 ];
+
+function FilterToolbarLabel({ icon: Icon, children }: { icon: LucideIcon; children: ReactNode }) {
+  return (
+    <p className="mb-2 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-500 dark:text-ink-400">
+      <Icon className="h-3.5 w-3.5 opacity-70" aria-hidden />
+      {children}
+    </p>
+  );
+}
+
+function SegmentedChip({
+  selected,
+  onClick,
+  children,
+  title,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  children: ReactNode;
+  title?: string;
+}) {
+  return (
+    <button
+      type="button"
+      title={title}
+      onClick={onClick}
+      className={cn(
+        'rounded-lg px-3 py-2 text-xs font-medium transition-all duration-200 sm:px-3.5 sm:text-sm',
+        selected
+          ? 'bg-ink-900 text-ink-50 shadow-sm dark:bg-ink-100 dark:text-ink-950'
+          : 'text-ink-600 hover:bg-white/95 dark:text-ink-300 dark:hover:bg-ink-800/90'
+      )}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function MatchesPage() {
   const [forYou, setForYou] = useState(false);
@@ -139,84 +178,134 @@ export default function MatchesPage() {
           </div>
         </div>
         {isError && loadErrorMessage ? (
-          <div className="mt-8 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-sm text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-100">
+          <div className="mt-8 rounded-2xl border border-ink-300/90 bg-ink-100/90 p-4 text-sm text-ink-900 dark:border-ink-600 dark:bg-ink-900/80 dark:text-ink-100">
             {loadErrorMessage}
           </div>
         ) : null}
         {refreshMutation.isError && refreshErrorMessage ? (
-          <div className="mt-4 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-sm text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-100">
+          <div className="mt-4 rounded-2xl border border-ink-300/90 bg-ink-100/90 p-4 text-sm text-ink-900 dark:border-ink-600 dark:bg-ink-900/80 dark:text-ink-100">
             Refresh failed: {refreshErrorMessage}
           </div>
         ) : null}
 
-        <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div className="relative w-full max-w-md">
-            <label htmlFor="matches-search" className="sr-only">
-              Search matches
-            </label>
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" aria-hidden />
-            <input
-              id="matches-search"
-              type="search"
-              placeholder="Search teams, venue, status, series…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-ink-200 bg-white py-2.5 pl-10 pr-4 text-sm text-ink-900 outline-none transition placeholder:text-ink-400 focus-visible:border-ink-900 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-50 dark:focus-visible:border-ink-300"
-              autoComplete="off"
-            />
-          </div>
-          <div className="flex min-w-0 flex-col gap-2">
-            <span className="text-xs font-medium uppercase tracking-wide text-ink-500 dark:text-ink-400">Show</span>
-            <div className="flex flex-wrap gap-1.5">
-              {TIME_FILTER_OPTIONS.filter((opt) => opt.value !== 'upcoming' || hasUpcoming).map((opt) => (
-                <Button
-                  key={opt.value}
-                  type="button"
-                  size="sm"
-                  variant={timeFilter === opt.value ? 'default' : 'outline'}
-                  className="shrink-0"
-                  onClick={() => setTimeFilter(opt.value)}
-                >
-                  {opt.label}
-                </Button>
-              ))}
+        <section
+          className="mt-8 overflow-hidden rounded-2xl border border-ink-200/80 bg-gradient-to-b from-white to-ink-50/80 shadow-sm dark:border-ink-800/80 dark:from-ink-950 dark:to-ink-900/90"
+          aria-label="Search and filters"
+        >
+          <div className="border-b border-ink-200/50 bg-white/70 px-4 py-3 backdrop-blur-sm dark:border-ink-800/50 dark:bg-ink-950/50">
+            <div className="relative">
+              <label htmlFor="matches-search" className="sr-only">
+                Search matches
+              </label>
+              <Search
+                className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400 dark:text-ink-500"
+                aria-hidden
+              />
+              <input
+                id="matches-search"
+                type="search"
+                placeholder="Search teams, venue, status, series…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full rounded-xl border-0 bg-ink-50/90 py-3 pl-11 pr-4 text-sm text-ink-900 shadow-inner shadow-ink-900/5 outline-none ring-1 ring-ink-200/80 transition placeholder:text-ink-400 focus:ring-2 focus:ring-ink-900/25 dark:bg-ink-900/80 dark:text-ink-50 dark:shadow-black/20 dark:ring-ink-700/80 dark:placeholder:text-ink-500 dark:focus:ring-ink-100/30"
+                autoComplete="off"
+              />
             </div>
           </div>
-          <div className="flex min-w-0 flex-col gap-2">
-            <span className="text-xs font-medium uppercase tracking-wide text-ink-500 dark:text-ink-400">Group by</span>
-            <div className="flex flex-wrap gap-1.5">
-              {GROUP_OPTIONS.map((opt) => (
-                <Button
-                  key={opt.value}
-                  type="button"
-                  size="sm"
-                  variant={groupMode === opt.value ? 'default' : 'outline'}
-                  className="shrink-0"
-                  title={opt.hint}
-                  onClick={() => setGroupMode(opt.value)}
-                >
-                  {opt.label}
-                </Button>
-              ))}
+
+          <div className="grid gap-5 p-4 sm:p-5 lg:grid-cols-2">
+            <div>
+              <FilterToolbarLabel icon={CalendarClock}>When</FilterToolbarLabel>
+              <div
+                className="inline-flex flex-wrap gap-0.5 rounded-xl bg-ink-100/90 p-1 ring-1 ring-ink-200/60 dark:bg-ink-950/90 dark:ring-ink-800/80"
+                role="group"
+                aria-label="Match time filter"
+              >
+                {TIME_FILTER_OPTIONS.filter((opt) => opt.value !== 'upcoming' || hasUpcoming).map((opt) => (
+                  <SegmentedChip
+                    key={opt.value}
+                    selected={timeFilter === opt.value}
+                    onClick={() => setTimeFilter(opt.value)}
+                  >
+                    {opt.label}
+                  </SegmentedChip>
+                ))}
+              </div>
+            </div>
+            <div>
+              <FilterToolbarLabel icon={Layers}>Group by</FilterToolbarLabel>
+              <div
+                className="flex flex-wrap gap-0.5 rounded-xl bg-ink-100/90 p-1 ring-1 ring-ink-200/60 dark:bg-ink-950/90 dark:ring-ink-800/80"
+                role="group"
+                aria-label="Grouping mode"
+              >
+                {GROUP_OPTIONS.map((opt) => (
+                  <SegmentedChip
+                    key={opt.value}
+                    selected={groupMode === opt.value}
+                    title={opt.hint}
+                    onClick={() => setGroupMode(opt.value)}
+                  >
+                    {opt.label}
+                  </SegmentedChip>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
         {!isLoading && !isError && totalCount === 0 ? (
-          <p className="mt-8 text-sm text-ink-600 dark:text-ink-400">
-            No matches in the database yet. Click “Refresh from API” to fetch the current list from CricAPI and store it.
-          </p>
+          <div className="mt-8 overflow-hidden rounded-2xl border border-dashed border-ink-300/90 bg-white/70 dark:border-ink-600/80 dark:bg-ink-900/50">
+            <div className="flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-10">
+              <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-ink-200/90 bg-ink-50 dark:border-ink-700 dark:bg-ink-900">
+                <Inbox className="h-7 w-7 text-ink-600 dark:text-ink-300" aria-hidden />
+              </span>
+              <div className="max-w-md space-y-2">
+                <h2 className="text-lg font-semibold tracking-tight text-ink-900 dark:text-ink-50">No snapshot yet</h2>
+                <p className="text-sm leading-relaxed text-ink-600 dark:text-ink-400">
+                  Your match list is stored in MongoDB and only updates when you refresh from CricAPI (backend needs{' '}
+                  <code className="rounded bg-ink-100 px-1.5 py-0.5 text-xs dark:bg-ink-800">CRIC_API_KEY</code>).
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <Button
+                  type="button"
+                  size="default"
+                  disabled={refreshMutation.isPending}
+                  className="gap-2"
+                  onClick={() => refreshMutation.mutate()}
+                >
+                  <RefreshCw className={`h-4 w-4 ${refreshMutation.isPending ? 'animate-spin' : ''}`} aria-hidden />
+                  Pull matches from API
+                </Button>
+                <Button type="button" variant="outline" asChild>
+                  <Link href="/arena" className="gap-2">
+                    Go to Arena
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
         ) : null}
 
         {!isLoading && !isError && totalCount > 0 && filtered.length === 0 ? (
-          <p className="mt-8 text-sm text-ink-600 dark:text-ink-400">No matches match your search. Try another team or keyword.</p>
+          <div className="mt-8 rounded-2xl border border-ink-200/80 bg-ink-50/80 px-5 py-6 text-center dark:border-ink-800/80 dark:bg-ink-900/40">
+            <p className="text-sm font-medium text-ink-900 dark:text-ink-100">No results for that search</p>
+            <p className="mt-1 text-sm text-ink-600 dark:text-ink-400">Try a shorter team code, venue, or status keyword.</p>
+            <Button type="button" variant="link" className="mt-2 h-auto p-0 text-ink-900 dark:text-ink-50" onClick={() => setSearch('')}>
+              Clear search
+            </Button>
+          </div>
         ) : null}
 
         {!isLoading && !isError && filtered.length > 0 && timeScoped.length === 0 ? (
-          <p className="mt-8 text-sm text-ink-600 dark:text-ink-400">
-            No matches in this view — try Past, Current
-            {hasUpcoming ? ', or Upcoming' : ''}.
-          </p>
+          <div className="mt-8 rounded-2xl border border-ink-200/90 bg-ink-50/70 px-5 py-6 text-center dark:border-ink-700/80 dark:bg-ink-900/50">
+            <p className="text-sm font-medium text-ink-900 dark:text-ink-100">Nothing in this time window</p>
+            <p className="mt-1 text-sm text-ink-600 dark:text-ink-400">
+              Switch to Past or Current
+              {hasUpcoming ? ', or Upcoming' : ''} — filters apply on top of your snapshot.
+            </p>
+          </div>
         ) : null}
 
         <div className="mt-10 space-y-12">
