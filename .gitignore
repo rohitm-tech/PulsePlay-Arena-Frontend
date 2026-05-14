@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+
+# Production build (if used)
+build/
+
+# Environment and secrets (keep .env.example committed)
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel
+
+# Logs and debug
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE (optional — remove if you commit shared editor config)
+.idea/
+*.swp
+*.swo
+
+# Turborepo (if added later)
+.turbo
