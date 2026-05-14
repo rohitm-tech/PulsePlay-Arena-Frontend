@@ -8,8 +8,8 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ARG NEXT_PUBLIC_API_URL=https://pulseplay-api-965239735739.europe-west1.run.app
-ARG NEXT_PUBLIC_WS_URL=wss://pulseplay-api-965239735739.europe-west1.run.app
+ARG NEXT_PUBLIC_API_URL=https://pulseplay-arena-api-965239735739.europe-west1.run.app
+ARG NEXT_PUBLIC_WS_URL=wss://pulseplay-arena-api-965239735739.europe-west1.run.app
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
 RUN npm run build

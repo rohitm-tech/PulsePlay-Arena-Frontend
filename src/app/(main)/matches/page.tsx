@@ -106,8 +106,8 @@ export default function MatchesPage() {
       <PageContainer>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.25em] text-ink-500 dark:text-ink-400">Live hub</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink-900 dark:text-ink-50">Live matches</h1>
+            <p className="text-xs font-medium uppercase tracking-[0.25em] text-ink-500 dark:text-ink-400">Match center</p>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink-900 dark:text-ink-50">Matches</h1>
             <p className="mt-2 max-w-xl text-sm text-ink-600 dark:text-ink-400">
               Matches are loaded from MongoDB. CricAPI runs only when you use Refresh (set CRIC_API_KEY on the backend).
               “For you” reorders the same snapshot by your favorite team from profile.

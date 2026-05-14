@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { AuthGate } from '@/components/AuthGate';
 import { PageContainer } from '@/components/layout/PageContainer';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -54,7 +55,11 @@ export default function ProfilePage() {
           <p className="text-xs font-medium uppercase tracking-[0.25em] text-ink-500 dark:text-ink-400">Account</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink-900 dark:text-ink-50">Profile</h1>
           <p className="mt-2 max-w-2xl text-sm text-ink-600 dark:text-ink-400">
-            Personalization, notification prefs, and fan tier from XP.
+            Personalization, notification prefs, and fan tier from XP. Season progression, streaks, and cosmetics live in{' '}
+            <Link href="/arena" className="font-medium text-ink-900 underline-offset-4 hover:underline dark:text-ink-100">
+              Arena
+            </Link>
+            .
           </p>
 
           <Card className="mt-10">

@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'PulsePlay — IPL second screen',
-  description: 'Real-time cricket engagement. Monochrome, fast, interactive.',
+  title: 'PulsePlay Arena — tournament engagement',
+  description: 'Gamified cricket seasons: XP, streaks, missions, predictions, and rewards on a premium dark canvas.',
   manifest: '/manifest.json',
 };
 

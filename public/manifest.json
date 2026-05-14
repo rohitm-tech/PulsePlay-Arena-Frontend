@@ -1,6 +1,6 @@
 {
-  "name": "PulsePlay",
-  "short_name": "PulsePlay",
+  "name": "PulsePlay Arena",
+  "short_name": "Arena",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fafafa",

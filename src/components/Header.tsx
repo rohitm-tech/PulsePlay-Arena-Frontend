@@ -14,7 +14,8 @@ import { Button } from '@/components/ui/button';
 import { listNotificationsRequest, markNotificationReadRequest } from '@/services/authApi';
 
 const nav = [
-  { href: '/matches', label: 'Live', matchPrefix: '/match/' as const },
+  { href: '/arena', label: 'Arena', auth: true as const },
+  { href: '/matches', label: 'Matches', matchPrefix: '/match/' as const },
   { href: '/features', label: 'Fan hub', auth: true as const },
   { href: '/leaderboards', label: 'Leaderboards' },
   { href: '/profile', label: 'Profile', auth: true as const },
@@ -63,9 +64,9 @@ export function Header({ className }: { className?: string }) {
       <div className={siteHeaderInner}>
         <Link href="/" className="group flex items-center gap-2.5">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-ink-200/90 bg-ink-900 text-sm font-bold text-ink-50 transition group-hover:scale-105 dark:border-ink-600 dark:bg-ink-50 dark:text-ink-950">
-            P
+            PA
           </span>
-          <span className="text-lg font-semibold tracking-tight text-ink-900 dark:text-ink-50">PulsePlay</span>
+          <span className="text-lg font-semibold tracking-tight text-ink-900 dark:text-ink-50">PulsePlay Arena</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">

@@ -200,9 +200,9 @@ export default function LandingPage() {
   }, []);
 
   const heroPillars = [
-    { icon: Radio, label: 'Socket.IO live rooms' },
+    { icon: Radio, label: 'Sockets when you enter a room' },
     { icon: Lock, label: 'JWT + refresh sessions' },
-    { icon: Zap, label: 'TanStack Query + Redis-backed API' },
+    { icon: Zap, label: 'Demand-based match cache' },
   ];
 
   const liveMatch: FeatureLine[] = [
@@ -442,20 +442,25 @@ export default function LandingPage() {
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ink-900 opacity-25 dark:bg-ink-50" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-ink-900 dark:bg-ink-50" />
                   </span>
-                  Second-screen IPL
+                  Second-screen IPL · Arena edition
                 </p>
                 <h1 className="scroll-reveal max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
-                  <span className="text-gradient">PulsePlay</span>
-                  <span className="text-ink-800 dark:text-ink-100"> — live cricket, fan rooms, and AI in one calm canvas.</span>
+                  <span className="text-gradient">PulsePlay Arena</span>
+                  <span className="text-ink-800 dark:text-ink-100"> — seasons, habits, live cricket.</span>
                 </h1>
                 <p className="scroll-reveal mt-6 max-w-xl text-lg text-ink-600 dark:text-ink-400">
-                  Follow the match with pulses and commentary, banter in sync with friends, and Gemini-backed context when you want depth — not a wall of marketing bullets.
+                  Earn XP on predictions, climb the pass, and chase streaks — then dive into matches on demand (CricAPI writes to Mongo; refresh when you want fresh cards).
                 </p>
                 <div className="scroll-reveal mt-10 flex flex-wrap gap-3">
-                  <Link href="/matches">
+                  <Link href="/arena">
                     <Button size="lg" className="group gap-2">
-                      Enter live hub
+                      Open Arena hub
                       <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+                    </Button>
+                  </Link>
+                  <Link href="/matches">
+                    <Button size="lg" variant="outline">
+                      Match center
                     </Button>
                   </Link>
                   <Link href="/register">
@@ -480,7 +485,7 @@ export default function LandingPage() {
                   <span className="rounded-full border border-ink-200/80 px-3 py-1 dark:border-ink-700">Live scores</span>
                   <span className="rounded-full border border-ink-200/80 px-3 py-1 dark:border-ink-700">Gemini</span>
                   <span className="rounded-full border border-ink-200/80 px-3 py-1 dark:border-ink-700">Polls & XP</span>
-                  <span className="rounded-full border border-ink-200/80 px-3 py-1 dark:border-ink-700">Sockets</span>
+                  <span className="rounded-full border border-ink-200/80 px-3 py-1 dark:border-ink-700">Pass & streaks</span>
                 </div>
               </motion.div>
 
@@ -592,7 +597,20 @@ export default function LandingPage() {
             <p className="mt-2 max-w-2xl text-sm text-ink-600 dark:text-ink-400">
               Each route exercises a different slice of the stack — sign in for personalized feeds, notifications, and AI.
             </p>
-            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              <Link
+                href="/arena"
+                className="group flex items-center gap-3 rounded-2xl border border-ink-200/80 bg-white/80 p-4 transition hover:border-ink-400 dark:border-ink-800 dark:bg-ink-950/50 dark:hover:border-ink-500"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-ink-200 bg-ink-50 dark:border-ink-700 dark:bg-ink-900">
+                  <Trophy className="h-5 w-5 text-ink-700 dark:text-ink-200" />
+                </span>
+                <span>
+                  <span className="block text-sm font-semibold">Arena hub</span>
+                  <span className="text-xs text-ink-500 dark:text-ink-500">XP · pass · streaks</span>
+                </span>
+                <ArrowRight className="ml-auto h-4 w-4 text-ink-400 transition group-hover:translate-x-0.5 dark:text-ink-500" />
+              </Link>
               <Link
                 href="/matches"
                 className="group flex items-center gap-3 rounded-2xl border border-ink-200/80 bg-white/80 p-4 transition hover:border-ink-400 dark:border-ink-800 dark:bg-ink-950/50 dark:hover:border-ink-500"
@@ -654,7 +672,7 @@ export default function LandingPage() {
           <div className={cn('text-center', siteInShell)}>
             <h2 className="scroll-reveal text-3xl font-semibold tracking-tight">Ready when the toss lands</h2>
             <p className="scroll-reveal mx-auto mt-4 max-w-2xl text-sm text-ink-300 dark:text-ink-600">
-              Sign in, pick a match room, and feel the stack: pulses, digest, analytics, chat, polls, and XP — all on the monochrome canvas.
+              Sign in, open Arena for progression and missions, then pull match cards on demand — CricAPI snapshots land in Mongo until you refresh.
             </p>
             <div className="scroll-reveal mt-8 flex flex-wrap justify-center gap-4">
               <Link href="/login">
